@@ -1,0 +1,31 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-04-01 11:14:10
+ * @LastEditTime: 2020-04-01 13:32:25
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \d3d:\myProject\index.html
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        1、获取密钥:
+        输入 ssh-keygen -t rsa -C
+        2、在c盘的用户中生成了一个.ssh的文件夹，里面有一个 id_rsa.pub 文件和一个 id_rsa 文件，复制 id_rsa.pub 里的所有内容
+        3、在git上点击setting ， 再点击 ssh and gpa keys ， 将复制的内容放进去。
+        4、输入 ssh -T git@github.com 检查是否成功绑定
+        5、输入 git config --global user.name 'liuingyear'
+        6、输入 git config --global user.email '185xxxx8682@163.com'
+        7、将库克隆到本地  git clone https://github.com/asus/myProject.git
+        8、输入 git add index.html
+        9、输入 git commit -m 'demoindex'
+        10、输入 git push origin master
+    </div>
+</body>
+</html>
