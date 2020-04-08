@@ -1,0 +1,59 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-04-08 12:26:01
+ * @LastEditTime: 2020-04-08 12:33:36
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \webpackc:\Users\asus\Desktop\三栏布局\双飞翼布局.html
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双飞翼布局</title>
+    <style>
+        .header{
+            height: 50px;
+            background: black;
+        }
+        .container{
+            width: 100%;
+            background: red;
+        }
+        .column{
+            float: left;
+            height: 500px;
+        }
+        .center{
+            margin-left: 150px;
+            margin-right: 200px;
+            height: 500px;
+        }
+        .left{
+            width: 150px;
+            margin-left: -100%;
+            background: yellow;
+        }
+        .right{
+            width: 200px;
+            margin-left: -200px;
+            background: blue;
+        }
+        .footer{
+            height: 50px;
+            clear: both;
+            background: pink;
+        }
+    </style>
+</head>
+<body>
+    <div class="header"></div>
+    <div class="container column">
+        <div class="center"></div>
+    </div>
+    <div class="column left"></div>
+    <div class="column right"></div>
+    <div class="footer"></div>
+</body>
+</html>

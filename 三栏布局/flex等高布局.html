@@ -1,0 +1,63 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-04-08 12:45:38
+ * @LastEditTime: 2020-04-08 12:48:15
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \webpackc:\Users\asus\Desktop\三栏布局\flex等高布局.html
+ -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>flex三栏等高布局</title>
+     <style>
+        body{
+            min-width: 500px;
+        }
+        .header{
+            height: 50px;
+            background: black;
+        }
+        .container{
+            display: flex;
+        }
+        .column{
+            /* float: left; */
+        }
+        .center{
+            
+            flex: 1;
+            background: red;
+            height: 500px;
+        }
+        .left{
+            width: 150px;
+            /* margin-left: -100%;
+            position: relative;
+            right: 150px; */
+            background: yellow;
+        }
+        .right{
+            width: 200px;
+            /* margin-right: -200px; */
+            background: blue;
+        }
+        .footer{
+            height: 50px;
+            clear: both;
+            background: pink;
+        }
+    </style>
+ </head>
+ <body>
+    <div class="header"></div>
+    <div class="container">
+        <div class="column left"></div>
+        <div class="column center"></div>
+        <div class="column right"></div>
+    </div>
+    <div class="footer"></div>
+ </body>
+ </html>
