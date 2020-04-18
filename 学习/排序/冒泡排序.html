@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .div1{
+            display: inline-block;
+        }
+        .div2{
+            background-color: yellow;
+            /* float: left; */
+            margin-bottom: 20px;
+        }
+        .div3{
+            height: 50px;
+            background-color: red;
+            margin-top: 30px;
+            /* float: left; */
+        }
+    </style>
+</head>
+<body>
+    <div class="div1">
+        <div class="div2">
+            <p onclick="clickFn()">1</p>
+            <p>1</p>
+            <p>1</p>
+            <p>1</p>
+            <p>1</p>
+            <p>1</p>
+            <p>1</p>
+        </div>
+    </div>
+    <div class="div3"></div>
+</body>
+</html>
+<script>
+    function clickFn(){
+        console.log(2)
+    }
+    function bubbleSort(arr){
+        arr.map((v, i) => {
+            arr.slice(0, arr.length - i).map((v, j) => {
+                if(v < arr[j - 1]){
+                    arr[j] = arr[j - 1];
+                    arr[j - 1] = v;
+                }
+            });
+        });
+        return arr;
+    }
+</script>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    function quickSort(arr) {
+        if(arr.length <= 1){
+            return arr;
+        }else{
+            let left = [], right = [];
+            arr.slice(1).map((v, i) => {
+                if(v < arr[0]){
+                    left.push(v);
+                }else{
+                    right.push(v);
+                }
+            });
+            return quickSort(left).concat(arr[0], quickSort(right));
+        }
+    }
+</script>

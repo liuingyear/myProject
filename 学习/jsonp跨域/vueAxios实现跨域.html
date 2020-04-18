@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+</head>
+
+<body>
+    <!--百du接口-->
+    <ul id="box">
+        <li v-for="item in v1">{{item}}</li>
+    </ul>
+
+    <script>
+        var vue = new Vue({
+            el: '#box',
+            data() {
+                return {
+                    v1: "1"
+                }
+            },
+            mounted: function () {
+                // 请求路径
+                this.$http.jsonp("https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su",{
+                    //请求参数
+                    params: {
+                        wd: this.v1
+                    },
+                    jsonp: 'cb'
+                    //回调参数
+                }).then(function (res) {
+                    //字符串转成json对象
+                    console.log(JSON.parse(res.bodyText));
+                    //JSON.parse() 方法将数据转换为 JavaScript 对象。
+                    vue.v1 = JSON.parse(res.bodyText).s;
+                },function () {
+                    console.log("抱歉无法调取")
+                })
+            }
+        });
+
+        /*同源策略下，某个服务器是无法获取到服务器以外的数据，
+        但是html里面的img,iframe和script等标签是个例外，
+        这些标签可以通过src属性请求到其他服务器上的数据。
+        而JSONP就是通过script节点src调用跨域的请求。*/
+    </script>
+
+</body>
+
+</html>
