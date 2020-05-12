@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    function binarySearch (arr, num) {
+        var len = arr.length,
+            start = 0,
+            end = len - 1;
+        while (start <= end) {
+            var middle = Math.floor((start + end) / 2);
+            if(num == arr[middle]){
+                return middle;
+            } else if (num > arr[middle]){
+                start = middle + 1;
+            } else {
+                end = middle - 1;
+            }
+        }
+        return arr;
+    }
+    var ary = [1,4,7,8,12,35,65,89,99,14];
+    console.log(binarySearch(ary, 12));
+</script>
