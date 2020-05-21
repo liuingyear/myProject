@@ -1,0 +1,227 @@
+# 前端自动化测试
+
+***
+
+## 市面上主流的前端测试框架
++ Jasmine： Javascript测试框架，出现的比较早
++ MOCHA：运行在Node.js和浏览器中，适用于异步测试
++ Jest：目前最流行的前端测试框架。
+优点： 比较新、基础很好、速度快、 API简单、 隔离性好、IDE整合、 多项目并行、 出覆盖率快
+
+***
+
+# Jest环境搭建
++ npm init
++ npm install Jest@24.8.0 -d
+
+***
+
+## 测试用例编写
++ 新建两个js文件  一个是被测试文件 demo.js、一个是测试文件 demo.test.js
+demo.js
+```
+function testFn (num) {
+    return num > 5 ? '大于5' : '不大于5'
+}
+module.exports = {
+    testFn
+}
+```
+在测试文件中要用 require 引入要测试的文件
+test方法：Jest封装的测试方法，两个参数，第一个为描述，第二个为测试方法
+expect方法：预期方法，预期使用这个方法得到什么样的结果
+demo.test.js
+```
+const demo = require('./demo.js');
+{ testFn } = demo;
+test('测试数字10', () => {
+    expect(testFn(10)).toBe('大于5')
+})
+```
+
+***
+
+## 测试
++ 将 package.json 中的 scripts 标签的值修改为 test 在后面添加 --watchAll 可开启自动测试
++ 然后使用 npm run test 命令进行测试
+
+## 单元测试和集成测试
++ 单元测试：对软件中的最小测试单元进行检查和验证，就是一个模块的测试
++ 集成测试：在单元测试的基础上，将所有模块组装成子系统，进行集成测试
+
++ Jest 初始化配置
+npx jest --init
+
++ 代码测试覆盖率 code coverage
+package.json 中的 coverageDirectory 的配置是用来生成代码覆盖率的说明文件的，可以修改为自己想要的文件夹名称
+
++ 代码覆盖率的生成
+npx jest --coverage
+
+***
+
+## Jest 中的匹配器
++ toBe() 匹配器： 这个相当于是等同于 === 的，也就是严格相等
++ toEqual() 匹配器：内容相等就可以通过测试，不严格相等时可以使用这个
++ toBeNull() 匹配器：只匹配 null 值
++ toBeUndefined() 匹配器：只匹配 undefined 值，空字符串是不通过测试的
++ toBeDefined() 匹配器： 只要定义过了，都可以匹配成功
++ toBeTruthy() 匹配器：这个是 true 和 false 的匹配器，相当于判断真假 （0 或者 null 或者 '' 不通过）
++ toBeFalsy() 匹配器：同上 （0 或者 null 或者 '' 会通过）
++ toBeGreaterThan() 匹配器：用来作数字比较的，大于什么数值，只要大于传入的数值，就可以通过测试
++ toBeLessThan() 匹配器： 和 toBeGreaterThan 相反
++ toBeGreaterThanOrEqual() 匹配器： 大于等于某个数字时通过测试
++ toBeLessThanOrEqual() 匹配器： 小于等于某个数字时通过测试
++ toBeCloseTo() 匹配器： 这个可以消除 Javascript 浮点精度错误的匹配器，例如 0.1 + 0.2 = 0.3 使用 toBeEqual() 测试时不会通过，但使用 toBeCloseTo() 测试就会通过
++ toMatch() 匹配器：字符串包含匹配器
++ toContain() 匹配器：数组的匹配器，数组是否包含某个值
++ toThrow() 匹配器：检测一个方法会不会抛出异常 (也可以在这个匹配器中加入一个字符串，要求抛出的异常必须和这个字符串的值一样)
++ not 匹配器：not 匹配器是比较特殊的匹配器，意思就是相反或者取反，比如当不希望抛出异常时，可以使用 not 匹配器
+example: 
+```
+const throwError  = () => {
+    throw new Error('此处抛出一个错误');
+};
+test('测试不抛出异常', () => {
+    expect(throwError).not.toThrow();
+})
+```
+
+***
+
+## 让 Jest 支持 ES6 语法
++ Babel 转换器的安装
+npm install @babel/core@7.4.5 @babel/preset-env@7.4.5 -D
+
++ Babel 的基本配置
+在根目录下新建一个 .babelrc 文件，在文件中写
+```
+{
+    "presets": [
+        [
+            "@babel/preset-env", {
+                "target": {
+                    "node": "current"
+                }
+            }
+        ]
+    ]
+}
+```
+
+***
+
+## 异步代码的测试方法
++ 回调函数式
+demo.js
+```
+import axios from "axios";
+export const testFn = (fn) => {
+    axios.get(url).then((res) => {
+        fn(res);
+    });
+}
+```
+demo.test.js
+```
+import { testFn } from "./demo.js";
+test('测试数据', () => {
+    testFn((data) => {
+        expect(data).toEqual({
+            success: true
+        })
+        done() // 必须加入一个 done 方法，保证回调已经完成
+    })
+})
+```
++ 直接返回 promise
+demo.js
+```
+import axios from "axios";
+export const testFn = (fn) => {
+    return axios.get(url);
+}
+```
+demo.test.js
+```
+import { testFn } from "./demo.js";
+test('测试数据', () => {
+    return testFn().then((data) => {
+        expect(data).toEqual({
+            success: true
+        })
+    })
+})
+```
++ 不存在接口的测试方法
+demo.js
+```
+import axios from "axios";
+export const testFn = (fn) => {
+    return axios.get(url);
+}
+```
+demo.test.js
+```
+import { testFn } from "./demo.js";
+test('测试数据', () => {
+    expect.assertions(1) // 必须断言一次，表示至少要走一次测试代码
+    return testFn().catch((e) => {
+        expect(e.toString().indexOf('404') > -1).toBe(true);
+    })
+})
+```
++ async...wait
+demo.js
+```
+import axios from "axios";
+export const testFn = (fn) => {
+    return axios.get(url);
+}
+```
+demo.test.js
+```
+import { testFn } from "./demo.js";
+test('测试数据', async() => {
+    await expect(testFn()).resolve.toMatchObject({
+        data: {
+            success: true
+        }
+    })
+})
+// 或者
+test('测试数据', async() => {
+    const res = await testFn();
+    expect(res.data).toEqual({
+        success: true
+    })
+})
+```
+***
+
+## Jest 中的四个钩子函数
++ beforeAll() 钩子函数
+在所有测试用例之前进行执行
++ afterAll() 钩子函数
+在完成所有测试用例后执行
++ beforeEach() 钩子函数
+每个测试用例都会执行一次的狗子函数
++ afterEach() 钩子函数
+每次测试用例完成测试后执行的钩子函数
+
+***
+
+## 测试用例分组
+Jest 提供了一个分组的语法 describe() , 这个方法接受两个参数
+```
+describe('第一组测试', () => {
+    test('测试1', () => {
+        expect(demo(10)).toBe('大于5')
+    })
+    test('测试2', () => {
+        expect(demo(4)).toBe('小于5')
+    })
+})
+```
+
+
