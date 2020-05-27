@@ -1,0 +1,42 @@
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        display: flex;
+        width: 600px;
+        height: 300px;
+    }
+
+    .left {
+        flex: 1 2 500px;
+        background-color: red;
+    }
+
+    .right {
+        flex: 2 1 400px;
+        background-color: blue;
+    }
+</style>
+<div class="container">
+    <div class="left"></div>
+    <div class="right"></div>
+</div>
+
+// 计算left、right的值
+flex: flex-grow(项目相对于其他项目扩展的大小) flex-shrink(项目相对于其他项目收缩的大小) flex-basis(项目的长度)
+总的宽度：600
+left: 1 2 500
+right: 2 1 400
+
+需要进行收缩的宽度大小： 500 + 400 - 600 = 300
+300 > 0  所以不进行扩展而进行收缩
+flex-shrink总的份数： 2 + 1 = 3
+总的项目宽度：500 * 2 + 400 * 1 = 1400
+left收缩的宽度: (500 * 2 / 1400) * 300 = 214.3
+right收缩的宽度: (400 * 1 / 1400) * 300 = 85.7
+
+left的宽度: 500 - 214.3 = 285.7
+right的宽度: 500 - 85.7 = 314.3
