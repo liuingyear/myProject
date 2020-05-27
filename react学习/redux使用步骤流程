@@ -1,0 +1,79 @@
+在一个TodoList.js文件中使用redux的步骤
+
+1、安装redux
+npm i --save redux
+2、新建store文件夹，在store文件夹下新建index.js、reducer.js、actionTypes.js、actionCreators.js
+--------------------------------------------------------index.js start--------------------------------------------------------
+index.js:
+import { createStore } from 'redux'
+import reducer from './reducer'
+const store = createStore(
+    reducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
+
+export default store
+---------------------------------------------------------index.js end-------------------------------------------------------
+
+
+---------------------------------------------------------reducer.js start--------------------------------------------------------
+reducer.js:
+import { CHANGE_INPUT, ADD_ITEM, DELETE_ITEM } from './actionTypes'
+const defaultState = {
+    // 调用store中index.js文件的文件中需要的变量定义的地方
+}
+export default (state = defaultState, action) => {
+    // 逻辑判断，注意 reducer中只能接收state，不能改变state
+    if (action.type === CHANGE_INPUT) {
+        let newState = JSON.parse(JSON.stringify(state));
+        newState.inputValue = action.value;
+        return newState;
+    }
+    return state;
+}
+---------------------------------------------------------reducer.js end--------------------------------------------------------
+
+
+---------------------------------------------------------actionTypes.js start-------------------------------------------------------
+actionTypes.js:
+// 用于定义action类型的变量值
+export const CHANGE_INPUT = "changeInput";
+export const ADD_ITEM = "addItem";
+export const DELETE_ITEM = "deleteItem";
+
+---------------------------------------------------------actionTypes.js end--------------------------------------------------------
+
+
+---------------------------------------------------------actionCreators.js start-----------------------------------------------------
+actionCreators.js:
+// 用于存放action动作，主要在使用store中index.js的文件中使用
+import { CHANGE_INPUT, ADD_ITEM, DELETE_ITEM } from './actionTypes'
+
+export const changeInputAction = (value) => ({
+    type: CHANGE_INPUT,
+    value
+})
+---------------------------------------------------------actionCreators.js end-----------------------------------------------------
+
+---------------------------------------------------------TodoList.js start--------------------------------------------------------
+TodoList.js：
+// 引入store和一些action操作
+import store from './store'
+import { changeInputAction, addItemAction, deleteItemAction } from './store/actionCreators'
+// 在constructor中获取store中的数据并赋予给state
+constructor(props) {
+    super(props);
+    this.state = store.getState()
+    // 在做一些输入修改操作时要进行订阅
+    this.storeChange = this.storeChange.bind(this);
+    store.subscribe(this.storeChange)
+}
+// 在输入操作时，需要将这个action动作dispatch到reducer.js中进行数据处理
+inputChange(e) {
+    const action = changeInputAction(e.target.value);
+    store.dispatch(action);
+}
+storeChange() { 
+    this.setState(store.getState())
+} 
+---------------------------------------------------------TodoList.js end--------------------------------------------------------
