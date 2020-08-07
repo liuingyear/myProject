@@ -35,7 +35,7 @@ components 文件夹下创建的文件为在 pages 文件夹下的文件中使�
 
 + 在项目的目录下的 pages 中新建一个文件，可以在地址栏中输入文件名进行访问
 + 在 components 创建一个子组件，并且在 pages 文件夹中的文件里进行引用
-
+***
 + 路由的标签跳转
 ```
 // 引入 Link 标签
@@ -72,7 +72,6 @@ import Router from 'next/router'
 import { withRouter } from 'next/router'
 import Link from 'next/link'
 
-
 const queryPage = ({router}) => {
     return (
         <>
@@ -83,6 +82,91 @@ const queryPage = ({router}) => {
 }
 export default withRouter(queryPage)
 ```
+***
++ 路由的6个钩子事件
+routeChangeStart
+routeChangeComplete
+beforeHistoryChange
+routeChangeError
+hashChangeStart
+hashChangeComplete
 
++ 通过 Router.events.on 来监听路由的钩子事件
+```
+Router.events.on('routeChangeStart', (...args) => {
+    console.log(...args)
+})
+```
++ 在 getInitialProps 中使用 axios 获取远端数据
+```
+const queryPage = ({router, list}) => {
+    return (
+        <>
+        <!-- 这里的 list 对应的就是返回的 promise -->
+            <div>list</div>
+        </>
+    )
+}
+queryPage.getInitialProps = async () => {
+    const promise = new Promise((resolve) => {
+        axios(url).then(
+            (res) => {
+                console.log(res)
+                resolve(res)
+            }
+        )
+    })
+    return await promise
+}
+// 使用 withRouter 能够进行动态传递路由参数
+export default withRouter(queryPage)
+```
+***
++ 使用 JSX style 来进行样式编写
+```
+function example () {
+    return (
+        <>
+            <div>颜色为红色的字体</div>
 
+            <style jsx>
+                {`
+                    div{color: red}
+                    <!-- 使用模板字符串可以动态改变颜色 -->
+                    div{color: ${color}}
+                `}
+            </style>
+        </>
+    )
+}
+```
+***
++ LazyLoading 
+<!-- 远端文件的懒加载 -->
+moment.js 的懒加载
+```
+    function Time () {
+        const [currentTime, setTime] = useState(Date.now())
+        const changeTime = async () => {
+            const moment = await import('moment')
+            setTime(moment.default(Date.now()).format())
+        }
+        return (
+            <>
+                <div>{currentTime}</div>
+            <div><button onClick={changeTime}>改变时间格式</button></div>
+            </>
+        )
+    }
+```
+<!-- 自定义文件的懒加载 -->
+```
+// 在 components 下生成一个子组件 child
 
+// 在 Time.js 中引入 dynamic
+import dynamic from 'next/dynamic'
+// 加载子组件
+const Child = dynamic(import('../components/child'))
+<Child />
+// 会在控制台看见一个 2.js 就是懒加载 child 文件
+```
