@@ -170,3 +170,61 @@ const Child = dynamic(import('../components/child'))
 <Child />
 // 会在控制台看见一个 2.js 就是懒加载 child 文件
 ```
+***
++ 自定义 Head 来实现 SEO 优化
+```
+import Head from 'next/head'
+
+function Home () {
+    return (
+        <Head>
+            <title>自定义标题</title>
+            <meta charSet="utf-8" />
+        </Head>
+    )
+}
+```
+tips: 可以在每一个页面进行 Head 的引用和使用，也可以将 Head 封装成一个子组件，然后在每个页面引用这个子组件
+
++ Next 下 antDesignUI 的使用
+为了能在 next 中 import 引入 css 样式文件
++ 需要安装 next 插件
+npm i @zeit/next-css
++ 在根目录下新建一个 next.config.js
+next.config.js
+```
+const withCss = require('@zeit/next-css')
+
+if(typeof require !== 'undefined'){
+    require.extensions['.css']=file=>{}
+}
+module.exports = withCss({})
+```
+配置好这些后就可以在文件中使用 import 进行引用 css 文件了
+需要重新运行项目
+
++ 按需加载插件 babel-plugin-import
+import i babel-plugin-import
++ 编写 .babelrc 文件
+```
+{
+    "presets": ["next/babel"],
+    "plugins": [
+        [
+            "import",
+            {
+                "libraryName": "antd",
+                "style": "css"
+            }
+        ]
+    ]
+}
+```
++ 如果 antd 的样式没有引入，需要在 pages 文件夹下的 _app.js 中引入 antd 的样式文件
+```
+import 'antd/dist/antd.css'
+```
+
+
+
+
