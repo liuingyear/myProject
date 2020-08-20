@@ -69,3 +69,33 @@ module.export = app => {
 ## egg-mysql 安装
 
 npm i --save egg-mysql
+
+npm i axios
+
+解决 egg 的端口号不同造成的跨域问题
+1、安装 egg-cors
+npm i egg-cors
+2、在 service/config/plugin.js 中配置
+
+```
+exports.cors = {
+  enable: true,
+  package: "egg-cors"
+}
+```
+
+3、在 service/config/config.default.js 中配置
+
+```
+config.security = {
+  csrf: {
+    enable: false
+  },
+  domainWhiteList: ['*]
+}
+config.cors = {
+  origin: "*",
+  allowMethods: "GET, HEAD,PUT,DELETE,PATCH,OPTIONS"
+}
+```
+
